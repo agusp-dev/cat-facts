@@ -17,6 +17,6 @@ export const Photo = ({ url, alt }) => (
 )
 
 Photo.propTypes = {
-  url: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired
+  url: PropTypes.string,
+  alt: PropTypes.string,
 }

@@ -1,42 +1,31 @@
-import { useEffect, useState } from 'react'
 import { Fact } from './components/Fact'
 import { Photo } from './components/Photo'
 import { RefreshButton } from './components/RefreshButton'
-import { CATASS_URL, getCatFact } from './services'
-import { getFirstWord } from './utils/getFirstWord'
+import { useCatFact } from './hooks/useCatFact'
+import { useCatPhoto } from './hooks/useCatPhoto'
 import './App.css'
 
 function App() {
 
-  const [fact, setFact] = useState('')
-  const [photoUrl, setPhotoUrl] = useState('')
-
-  const getCatFacts = () => {
-    getCatFact()
-      .then(data => setFact(data?.fact))
-  }
-
-  useEffect(getCatFacts, [])
-
-  useEffect(() => {
-    if (fact) {
-      const firstWord = getFirstWord(fact)
-      setPhotoUrl(CATASS_URL.concat(firstWord))
-    }
-  }, [fact])
+  const { fact, factError, refreshFact } = useCatFact()
+  const { imgSrc } = useCatPhoto({ fact })
 
   const handleRefresh = () => {
-    getCatFacts()
+    refreshFact()
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {console.log('rendering')}
       <Photo 
-        url={ photoUrl }
+        url={ imgSrc }
         alt={ fact } 
       />
       <Fact text={ fact || 'No Data' } />
       <RefreshButton title='Refresh' onClick={ handleRefresh } />
+      {factError && (
+        <p style={{ color: 'red' }}>{ factError }</p>  
+      )}
     </div>
   )
 }
