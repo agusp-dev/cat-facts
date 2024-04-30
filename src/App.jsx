@@ -7,7 +7,7 @@ import './App.css'
 
 function App() {
 
-  const { fact, refreshFact } = useCatFact()
+  const { fact, factError, refreshFact } = useCatFact()
   const { imgSrc } = useCatPhoto({ fact })
 
   const handleRefresh = () => {
@@ -23,6 +23,9 @@ function App() {
       />
       <Fact text={ fact || 'No Data' } />
       <RefreshButton title='Refresh' onClick={ handleRefresh } />
+      {factError && (
+        <p style={{ color: 'red' }}>{ factError }</p>  
+      )}
     </div>
   )
 }
